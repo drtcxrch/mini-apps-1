@@ -80,8 +80,8 @@ var winningConfig = function (streak) {
 
 var checkForWinner = function (board) {
   var rowOne = [board.row1.col1, board.row1.col2, board.row1.col3];
-  var rowTwo = [board.row1.col1, board.row1.col2, board.row1.col3];
-  var rowThree = [board.row1.col1, board.row1.col2, board.row1.col3];
+  var rowTwo = [board.row2.col1, board.row2.col2, board.row2.col3];
+  var rowThree = [board.row3.col1, board.row3.col2, board.row3.col3];
   var column1 = [board.row1.col1, board.row2.col1, board.row3.col1];
   var column2 = [board.row1.col2, board.row2.col2, board.row3.col2];
   var column3 = [board.row1.col3, board.row2.col3, board.row3.col3];
@@ -109,7 +109,9 @@ var isTie = function (board) {
     }
   }
 
-  alert('It\'s a tie!! Start a new game!!');
+  setTimeout(function() {
+    alert('It\'s a tie!! Start a new game!!');
+  }, 200);
 }
 
 //View
