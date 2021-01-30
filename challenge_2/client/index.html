@@ -5,12 +5,9 @@
     <title>CSV Report Generator</title>
   </head>
   <body>
-    <form id="formdata" method="POST" action="/upload_json">
-      <input id="selectFiles" type="textarea">
+    <form id="formdata" action='/upload_json' enctype="application/json" method="POST">
+      <input id="selectFiles" type="textarea" name="json">
       <input id="import" type="submit" value="Submit">
-      <!-- <input type="file" id="selectFiles" value="Import" /><br />
-      <button id="import">Import</button>
-      <textarea id="result"></textarea> -->
     </form>
     <script src="app.js">
     </script>

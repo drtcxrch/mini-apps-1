@@ -1,8 +1,30 @@
-document.getElementById('import').onclick = function(e) {
-  var files = document.getElementById('selectFiles').value;
-  console.log(files);
-  e.preventDefault();
-}
+// document.getElementById('import').onclick = function(e) {
+//   var files = document.getElementById('selectFiles').value;
+//   console.log(files);
+//   e.preventDefault();
+// }
+
+// const form = document.getElementById('formdata');
+
+// form.addEventListener('submit', function (e) {
+//   e.preventDefault();
+
+//   const formData = new FormData(this);
+
+//   console.log(formData);
+
+//   fetch('/upload_json', {
+//     method: 'post',
+//     body: formData
+//   }).then(function (response) {
+//     console.log(response);
+//     return response.text();
+//   }).then(function (text) {
+//     console.log(text);
+//   }).catch(function (error) {
+//     console.error(error);
+//   });
+// });
 
 // window.addEventListener("load", function () {
 //   function sendData() {
@@ -13,6 +35,7 @@ document.getElementById('import').onclick = function(e) {
 //     console.log(FD);
 //     // Define what happens on successful data submission
 //     XHR.addEventListener("load", function (event) {
+//       console.log(event.target);
 //       alert(event.target.responseText);
 //     });
 
