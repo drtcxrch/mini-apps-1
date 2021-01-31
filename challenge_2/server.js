@@ -2,8 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
-
-
 //Serve client files
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -14,14 +12,11 @@ app.get('/', (req, res) => {
 })
 
 app.post('/upload_json', (req, res) => {
-  // console.log('*****!!!!req:', req.body.json );
-  // console.log(res);
+
   var json = req.body.json;
-  // console.log('json', json);
   var parsed = JSON.parse(json);
-  // console.log(parsed);
-  // console.log('csv', jsonToCSV(parsed));
-  console.log('csv', jsonToCSV(parsed));
+
+  res.end(jsonToCSV(parsed))
   res.sendStatus(200);
 })
 
@@ -42,6 +37,7 @@ var jsonToCSV = (json) => {
         newLine += (json[field] + ',');
       } else {
         for (var i = 0; i < json.children.length; i++) {
+          newLine = newLine.slice(0, newLine.length - 1);
           newLine += '\r\n'
           dataCollector(json.children[i]);
         }
@@ -51,7 +47,7 @@ var jsonToCSV = (json) => {
 
   dataCollector(json);
 
-  var csv = fields.join(',') + '\r\n' + newLine;
+  var csv = fields.join(',') + '\r\n' + newLine.slice(0, newLine.length - 1);
   return csv;
 
 }
