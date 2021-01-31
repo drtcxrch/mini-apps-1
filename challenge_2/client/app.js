@@ -1,8 +1,8 @@
-// document.getElementById('import').onclick = function(e) {
-//   var files = document.getElementById('selectFiles').value;
-//   console.log(files);
-//   e.preventDefault();
-// }
+
+document.getElementById('submit').onclick = function(e) {
+
+  // e.preventDefault();
+}
 
 // const form = document.getElementById('formdata');
 

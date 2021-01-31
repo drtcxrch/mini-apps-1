@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
+
+
 //Serve client files
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -11,14 +13,22 @@ app.get('/', (req, res) => {
 
 })
 
-app.post('/upload_json', (req, res) => {
+app.post('/', (req, res) => {
 
   var json = req.body.json;
   var parsed = JSON.parse(json);
+  var converted = jsonToCSV(parsed);
 
-  res.end(jsonToCSV(parsed))
-  res.sendStatus(200);
+  res.set('Content-Type', 'text/html');
+  var response = (`<form id="formdata" enctype="application/json" method="POST">
+    <input id="selectFiles" type="textarea" name="json">
+      <button id="submit" type="submit">Submit</button>
+    </form>`) + converted;
+  // res.send(response))
+  // res.write(response);
+  res.end(response);
 })
+
 
 var jsonToCSV = (json) => {
 
@@ -38,7 +48,7 @@ var jsonToCSV = (json) => {
       } else {
         for (var i = 0; i < json.children.length; i++) {
           newLine = newLine.slice(0, newLine.length - 1);
-          newLine += '\r\n'
+          newLine += '<br>'
           dataCollector(json.children[i]);
         }
       }
@@ -47,7 +57,7 @@ var jsonToCSV = (json) => {
 
   dataCollector(json);
 
-  var csv = fields.join(',') + '\r\n' + newLine.slice(0, newLine.length - 1);
+  var csv = fields.join(',') + '<br>' + newLine.slice(0, newLine.length - 1);
   return csv;
 
 }
