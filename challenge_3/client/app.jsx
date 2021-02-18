@@ -33,7 +33,7 @@ class App extends React.Component {
 
   next() {
     let currentForm = this.state.currentForm;
-    currentForm = currentForm === 4 ? 1 : currentForm + 1;
+    currentForm = currentForm === 4 ? 0 : currentForm + 1;
     this.setState({
       currentForm: currentForm
     })
@@ -41,27 +41,54 @@ class App extends React.Component {
 
   nextButton() {
     let currentForm = this.state.currentForm;
-
-    if (currentForm < 4) {
+    if (currentForm === 0) {
+      return (
+        <button type="button" onClick={this.next}>
+          Checkout
+        </button>
+      )
+    } else if (currentForm > 0 && currentForm < 4) {
       return (
         <button type="button" onClick={this.next}>
           Next
         </button>
       )
+    } else {
+      return (
+        <button type="button" onClick={this.next}>
+          Purchase
+        </button>
+      )
     }
-
-    return null;
   }
 
   render() {
     return (
       <div>
-        <h1>Multistep Checkout</h1>
-        <Home />
-        <F1 />
-        <F2 />
-        <F3 />
-        <Final />
+        <form onSubmit={this.handleSubmit}>
+          <Home
+            currentForm={this.state.currentForm}
+            handleChange={this.handleChange}
+          />
+          <F1
+            currentForm={this.state.currentForm}
+            handleChange={this.handleChange}
+          />
+          <F2
+            currentForm={this.state.currentForm}
+            handleChange={this.handleChange}
+          />
+          <F3
+            currentForm={this.state.currentForm}
+            handleChange={this.handleChange}
+          />
+          <Final
+            currentForm={this.state.currentForm}
+            handleChange={this.handleChange}
+          />
+          {this.nextButton()}
+        </form>
+
       </div>
     )
   }
@@ -73,7 +100,7 @@ const Home = (props) => {
   }
 
   return (
-    <button>Checkout</button>
+    <h1>Multistep Checkout</h1>
   )
 }
 
@@ -85,7 +112,9 @@ const F1 = (props) => {
   }
   return (
     <div>
-
+      <label>Name:</label>
+      <label>Email:</label>
+      <label>Password:</label>
     </div>
   )
 }
@@ -97,7 +126,12 @@ const F2 = (props) => {
   }
   return (
     <div>
-
+      <label>Line 1:</label>
+      <label>Line 2:</label>
+      <label>City:</label>
+      <label>State:</label>
+      <label>Zip:</label>
+      <label>Phone #:</label>
     </div>
   )
 }
@@ -108,7 +142,10 @@ const F3 = (props) => {
   }
   return (
     <div>
-
+      <label>Credit Card #:</label>
+      <label>Expiration Date:</label>
+      <label>CVV:</label>
+      <label>Billing Zip:</label>
     </div>
   )
 }
@@ -119,7 +156,7 @@ const Final = (props) => {
   }
   return (
     <div>
-
+      <h1>Click to submit!</h1>
     </div>
   )
 }
