@@ -19,19 +19,50 @@ class App extends React.Component {
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.next = this.next.bind(this);
+    this.nextButton = this.nextButton.bind(this);
   }
 
-  handleChange() {
-
+  handleChange(e) {
+    console.log(e.target);
   }
 
-  handleSubmit() {
+  handleSubmit(e) {
+    console.log(e.target);
+  }
 
+  next() {
+    let currentForm = this.state.currentForm;
+    currentForm = currentForm === 4 ? 1 : currentForm + 1;
+    this.setState({
+      currentForm: currentForm
+    })
+  }
+
+  nextButton() {
+    let currentForm = this.state.currentForm;
+
+    if (currentForm < 4) {
+      return (
+        <button type="button" onClick={this.next}>
+          Next
+        </button>
+      )
+    }
+
+    return null;
   }
 
   render() {
     return (
-      <div>Hi there!</div>
+      <div>
+        <h1>Multistep Checkout</h1>
+        <Home />
+        <F1 />
+        <F2 />
+        <F3 />
+        <Final />
+      </div>
     )
   }
 }
@@ -73,6 +104,17 @@ const F2 = (props) => {
 
 const F3 = (props) => {
   if (props.currentForm !== 3) {
+    return null;
+  }
+  return (
+    <div>
+
+    </div>
+  )
+}
+
+const Final = (props) => {
+  if (props.currentForm !== 4) {
     return null;
   }
   return (
