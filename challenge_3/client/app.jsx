@@ -1,13 +1,17 @@
-const express = require('express');
-const app = express();
-const port = 3000;
 
-app.use(express.static('public');
+class App extends React.Component {
+  constructor() {
+    super()
+    this.state = {
 
-app.get('/', () => {
+    }
+  }
 
-})
+  render() {
+    return (
+      <div>Hi there!</div>
+    )
+  }
+}
 
-app.listen(port, () => {
-  console.log(`app listening at http://localhost:${port}`);
-})
+ReactDOM.render(<App />, document.getElementById('app'));
