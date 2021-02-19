@@ -22,8 +22,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/checkout', (req, res) => {
-  var customer = req.body;
-  // let sql = "INSERT INTO customers (name, email, password, line_1, line_2, city, state, zip_code, phone_number, credit_card, expiry_date, cvv, billing_zip) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)"
+  let customer = req.body;
   let sql = 'INSERT INTO customer SET ?';
   let post = {
     name: customer.name,
