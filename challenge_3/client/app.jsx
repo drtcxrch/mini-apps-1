@@ -27,12 +27,49 @@ class App extends React.Component {
     const {name, value} = e.target;
     this.setState({
       [name]: value
-    }, () => console.log(this.state))
+    })
   }
 
   handleSubmit(e) {
     e.preventDefault()
+
     const {name, email, password, line_1, line_2, city, state, zip_code, phone_number, credit_card, expiry_date, cvv, billing_zip} = this.state;
+
+    const customer = {
+      name, email, password, line_1, line_2, city, state, zip_code, phone_number, credit_card, expiry_date, cvv, billing_zip
+    }
+
+    const requestOptions = {
+      method: 'POST',
+      headers: {'Content-Type' : 'application/json'},
+      body: JSON.stringify(customer)
+    }
+
+    fetch('http://localhost:3000/checkout', requestOptions)
+    .then(response => response.json())
+    .then(result => {
+      console.log('Success:', result);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    })
+
+    this.setState({
+      currentForm: 0,
+      name: '',
+      email: '',
+      password: '',
+      line_1: '',
+      line_2: '',
+      city: '',
+      state: '',
+      zip_code: '',
+      phone_number: '',
+      credit_card: '',
+      expiry_date: '',
+      cvv: '',
+      billing_zip: ''
+    })
   }
 
   next() {
@@ -59,7 +96,7 @@ class App extends React.Component {
       )
     } else {
       return (
-        <button type="button" onClick={this.next}>
+        <button type="button" onClick={this.handleSubmit}>
           Purchase
         </button>
       )
