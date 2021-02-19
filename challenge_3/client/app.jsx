@@ -24,11 +24,15 @@ class App extends React.Component {
   }
 
   handleChange(e) {
-    console.log(e.target);
+    const {name, value} = e.target;
+    this.setState({
+      [name]: value
+    }, () => console.log(this.state))
   }
 
   handleSubmit(e) {
-    console.log(e.target);
+    e.preventDefault()
+    const {name, email, password, line_1, line_2, city, state, zip_code, phone_number, credit_card, expiry_date, cvv, billing_zip} = this.state;
   }
 
   next() {
@@ -112,9 +116,29 @@ const F1 = (props) => {
   }
   return (
     <div>
-      <label>Name:</label>
-      <label>Email:</label>
-      <label>Password:</label>
+      <label>Name: </label>
+      <input
+        id="name"
+        name="name"
+        value={props.name}
+        onChange={props.handleChange}
+      />
+      <br />
+      <label>Email: </label>
+      <input
+        id="email"
+        name="email"
+        value={props.email}
+        onChange={props.handleChange}
+      />
+      <br />
+      <label>Password: </label>
+      <input
+        id="password"
+        name="password"
+        value={props.password}
+        onChange={props.handleChange}
+      />
     </div>
   )
 }
