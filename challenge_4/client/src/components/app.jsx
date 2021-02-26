@@ -1,5 +1,4 @@
 import React from 'react';
-import css from '../../dist/style.css';
 
 class App extends React.Component {
     constructor(props) {
@@ -23,8 +22,10 @@ class App extends React.Component {
                 columnViews.push(
                     <div
                         key={'column-' + j}
-                        style={{width: 100, height: 100, backgroundColor: 'white', border: '1px solid #333'}}
-                    ></div>
+                        style={{width: '8vw', height: '8vw', backgroundColor: '#00a8ff', display: 'flex', padding: 5}}
+                    >
+                        <div style={{borderRadius: '50%', backgroundColor: 'white', flex: 1}}></div>
+                    </div>
                 )
             }
             rowViews.push(
