@@ -7,13 +7,20 @@ class App extends React.Component {
         this.state = {
             rows: 6,
             columns: 7,
-            moves: [
-                {x: 0, y: 0, player: 'red'}
-            ]
+            moves: [],
+            playerTurn: 'red'
         }
 
         this.createBoard = this.createBoard.bind(this);
         this.getPiece = this.getPiece.bind(this);
+        this.resetBoard = this.resetBoard.bind(this);
+        this.addMove = this.addMove.bind(this);
+    }
+
+    resetBoard() {
+        this.setState({
+            moves: []
+        })
     }
 
     getPiece(x, y) {
@@ -23,20 +30,28 @@ class App extends React.Component {
         return list[0];
     }
 
+    addMove(x, y) {
+        console.log(x, y);
+        const { playerTurn } = this.state;
+        const nextPlayerTurn = playerTurn === 'red' ? 'yellow' : 'red';
+        this.setState({moves: this.state.moves.concat({x, y, player: playerTurn}), playerTurn: nextPlayerTurn});
+    }
+
     createBoard() {
         const {rows, columns} = this.state;
         const rowViews = [];
 
-        for (var i = 0; i < this.state.rows; i++) {
+        for (let row = 0; row < this.state.rows; row++) {
             const columnViews = [];
-            for (var j = 0; j < this.state.columns; j++) {
+            for (let column = 0; column < this.state.columns; column++) {
 
-                const piece = this.getPiece(j, i);
+                const piece = this.getPiece(column, row);
 
                 columnViews.push(
                     <div
-                        key={'column-' + j}
-                        style={{width: '8vw', height: '8vw', backgroundColor: 'blue', display: 'flex', padding: 5}}
+                        key={column}
+                        onClick={() => {this.addMove(column, row) }}
+                        style={{width: '8vw', height: '8vw', backgroundColor: 'blue', display: 'flex', padding: 5, cursor: 'pointer'}}
                     >
                         <div style={{borderRadius: '50%', backgroundColor: 'white', flex: 1, display: 'flex'}}>
                             {piece ? <div style={{ backgroundColor: piece.player, flex: 1, borderRadius: '50%', border: '1px solid'}}/> : undefined}
@@ -46,16 +61,18 @@ class App extends React.Component {
             }
             rowViews.push(
                 <div
-                    key={'row-' + i}
+                    key={row}
                     style={{ display: 'flex', flexDirection: 'row' }}
                 >{columnViews}</div>
             )
         }
+
         return (
-            <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div style={{ backgrounColor: 'red', display: 'flex', flexDirection: 'column'}}>
                 {rowViews}
             </div>
         )
+
     }
 
     render() {
