@@ -1,66 +1,30 @@
 
 document.getElementById('submit').onclick = function(e) {
-
-  // e.preventDefault();
+  const selectedFile = document.getElementById('selectFiles').files[0];
+  readFile(selectedFile);
+  e.preventDefault();
 }
 
-// const form = document.getElementById('formdata');
+var readFile = (file) => {
 
-// form.addEventListener('submit', function (e) {
-//   e.preventDefault();
+  const reader = new FileReader();
+  reader.addEventListener('load', (event) => {
+    event.target.result;
+  });
+  reader.readAsDataURL(file);
+}
 
-//   const formData = new FormData(this);
+// document.getElementById('submit').onclick = function(e) {
+//   let file = document.getElementById("selectFiles").files[0];
+//   let formData = new FormData();
 
+//   formData.append("file", file);
 //   console.log(formData);
+//   fetch('/', { method: "POST", body: formData });
+//   e.preventDefault();
+// }
 
-//   fetch('/upload_json', {
-//     method: 'post',
-//     body: formData
-//   }).then(function (response) {
-//     console.log(response);
-//     return response.text();
-//   }).then(function (text) {
-//     console.log(text);
-//   }).catch(function (error) {
-//     console.error(error);
-//   });
-// });
 
-// window.addEventListener("load", function () {
-//   function sendData() {
-//     const XHR = new XMLHttpRequest();
-
-//     // Bind the FormData object and the form element
-//     const FD = new FormData(form);
-//     console.log(FD);
-//     // Define what happens on successful data submission
-//     XHR.addEventListener("load", function (event) {
-//       console.log(event.target);
-//       alert(event.target.responseText);
-//     });
-
-//     // Define what happens in case of error
-//     XHR.addEventListener("error", function (event) {
-//       alert('Oops! Something went wrong.');
-//     });
-
-//     // Set up our request
-//     XHR.open("POST", '/upload_json');
-
-//     // The data sent is what the user provided in the form
-//     XHR.send(FD);
-//   }
-
-//   // Access the form element...
-//   const form = document.getElementById("formdata");
-//   console.log(form);
-//   // ...and take over its submit event.
-//   form.addEventListener("submit", function (event) {
-//     event.preventDefault();
-
-//     sendData();
-//   });
-// });
 
 
 

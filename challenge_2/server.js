@@ -1,8 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-
-
+const fs = require('fs');
+const path = require('path');
 
 //Serve client files
 app.use(express.json());
@@ -14,18 +14,18 @@ app.get('/', (req, res) => {
 })
 
 app.post('/', (req, res) => {
-
-  var json = req.body.json;
-  var parsed = JSON.parse(json);
+  var path = './samples/'
+  console.log(req);
+  let rawdata = fs.readFileSync(path + req.body.json);
+  let parsed = JSON.parse(rawdata);
   var converted = jsonToCSV(parsed);
 
   res.set('Content-Type', 'text/html');
   var response = (`<form id="formdata" enctype="application/json" method="POST">
-    <input id="selectFiles" type="textarea" name="json">
+      <input id="selectFiles" type="file" name="json" acccept="json">
       <button id="submit" type="submit">Submit</button>
     </form>`) + converted;
-  // res.send(response))
-  // res.write(response);
+
   res.end(response);
 })
 
