@@ -15,6 +15,8 @@ class App extends React.Component {
         this.getPiece = this.getPiece.bind(this);
         this.resetBoard = this.resetBoard.bind(this);
         this.addMove = this.addMove.bind(this);
+        this.checkForRowWin = this.checkForRowWin.bind(this);
+        this.checkForColWin = this.checkForColWin.bind(this);
     }
 
     resetBoard() {
@@ -30,11 +32,64 @@ class App extends React.Component {
         return list[0];
     }
 
+    checkForRowWin(x, y, player) {
+        let winningMoves = [{ x, y }]
+
+        for (let column = x + 1; column < x + 4; column += 1) {
+            const checkPiece = this.getPiece(column, y);
+            if (checkPiece && checkPiece.player === player) {
+                winningMoves.push(column, y);
+            } else {
+                break;
+            }
+        }
+        for (let column = x - 1; column > x - 4; column -= 1) {
+            const checkPiece = this.getPiece(column, y);
+            if (checkPiece && checkPiece.player === player) {
+                winningMoves.push(column, y);
+            } else {
+                break;
+            }
+
+            if (winningMoves.length > 3) {
+                this.setState({winner: player, winningMoves});
+                return true;
+            }
+        }
+
+
+    }
+
+    checkForColWin(x, y, player) {
+        let winningMoves = [{ x, y }]
+
+        for (let row = y + 1; row < y + 4; row += 1) {
+            const checkPiece = this.getPiece(x, row);
+            if (checkPiece && checkPiece.player === player) {
+                winningMoves.push(x, row);
+            } else {
+                break;
+            }
+        }
+        for (let row = x - 1; row > x - 4; row -= 1) {
+            const checkPiece = this.getPiece(x, row);
+            if (checkPiece && checkPiece.player === player) {
+                winningMoves.push(x, row);
+            } else {
+                break;
+            }
+
+            if (winningMoves.length > 3) {
+                this.setState({ winner: player, winningMoves });
+                return true;
+            }
+        }
+    }
+
     addMove(x, y) {
-        console.log(x, y);
         const { playerTurn } = this.state;
         const nextPlayerTurn = playerTurn === 'red' ? 'yellow' : 'red';
-        this.setState({moves: this.state.moves.concat({x, y, player: playerTurn}), playerTurn: nextPlayerTurn});
+        this.setState({moves: this.state.moves.concat({x, y, player: playerTurn}), playerTurn: nextPlayerTurn}, this.checkForWin(x, y, playerTurn));
     }
 
     createBoard() {
