@@ -36,14 +36,12 @@ class App extends React.Component {
     }
 
     checkForRowWin(x, y, player) {
-        // console.log('inputs:', x, y, player)
         let winningMoves = [{ x, y }]
 
         for (let column = x + 1; column < x + 4; column += 1) {
             const checkPiece = this.getPiece(column, y);
 
             if (checkPiece && checkPiece.player === player) {
-                // console.log('checkPice: ', checkpiece)
                 winningMoves.push({x: column, y : y});
             } else {
                 break;
@@ -144,7 +142,19 @@ class App extends React.Component {
     addMove(x, y) {
         const { playerTurn } = this.state;
         const nextPlayerTurn = playerTurn === 'red' ? 'yellow' : 'red';
-        this.setState({moves: this.state.moves.concat({x, y, player: playerTurn}), playerTurn: nextPlayerTurn}, () => this.checkForWin(x, y, playerTurn));
+        let availablePosition = null;
+
+        for (let position = this.state.rows - 1; position >= 0; position--) {
+            if (!this.getPiece(x, position)) {
+                availablePosition = position;
+                break;
+            }
+        }
+
+        if (availablePosition !== null) {
+            this.setState({ moves: this.state.moves.concat({ x, y: availablePosition, player: playerTurn }), playerTurn: nextPlayerTurn }, () => this.checkForWin(x, availablePosition, playerTurn));
+        }
+
     }
 
     createBoard() {
