@@ -36,6 +36,8 @@ class App extends React.Component {
     }
 
     checkForRowWin(x, y, player) {
+        console.log(this);
+        console.log(x, y, player);
         let winningMoves = [{ x, y }]
 
         for (let column = x + 1; column < x + 4; column += 1) {
@@ -57,7 +59,7 @@ class App extends React.Component {
 
             if (winningMoves.length > 3) {
                 this.setState({winner: player, winningMoves});
-
+                console.log(winningMoves);
                 return true;
             }
         }
