@@ -17,11 +17,14 @@ class App extends React.Component {
         this.addMove = this.addMove.bind(this);
         this.checkForRowWin = this.checkForRowWin.bind(this);
         this.checkForColWin = this.checkForColWin.bind(this);
+        this.checkForWin = this.checkForWin.bind(this);
+        this.getWinningMovesForDiag = this.getWinningMovesForDiag.bind(this);
     }
 
     resetBoard() {
         this.setState({
-            moves: []
+            moves: [],
+            winner: null
         })
     }
 
@@ -33,12 +36,15 @@ class App extends React.Component {
     }
 
     checkForRowWin(x, y, player) {
+        // console.log('inputs:', x, y, player)
         let winningMoves = [{ x, y }]
 
         for (let column = x + 1; column < x + 4; column += 1) {
             const checkPiece = this.getPiece(column, y);
+
             if (checkPiece && checkPiece.player === player) {
-                winningMoves.push(column, y);
+                // console.log('checkPice: ', checkpiece)
+                winningMoves.push({x: column, y : y});
             } else {
                 break;
             }
@@ -46,13 +52,14 @@ class App extends React.Component {
         for (let column = x - 1; column > x - 4; column -= 1) {
             const checkPiece = this.getPiece(column, y);
             if (checkPiece && checkPiece.player === player) {
-                winningMoves.push(column, y);
+                winningMoves.push({x: column, y: y});
             } else {
                 break;
             }
 
             if (winningMoves.length > 3) {
                 this.setState({winner: player, winningMoves});
+
                 return true;
             }
         }
@@ -66,34 +73,82 @@ class App extends React.Component {
         for (let row = y + 1; row < y + 4; row += 1) {
             const checkPiece = this.getPiece(x, row);
             if (checkPiece && checkPiece.player === player) {
-                winningMoves.push(x, row);
+                winningMoves.push({x : x, y : row});
             } else {
                 break;
             }
         }
-        for (let row = x - 1; row > x - 4; row -= 1) {
+        for (let row = y - 1; row > y - 4; row -= 1) {
             const checkPiece = this.getPiece(x, row);
             if (checkPiece && checkPiece.player === player) {
-                winningMoves.push(x, row);
+                winningMoves.push({ x: x, y: row });
             } else {
                 break;
             }
 
             if (winningMoves.length > 3) {
                 this.setState({ winner: player, winningMoves });
+
                 return true;
             }
         }
     }
 
+    getWinningMovesForDiag(x, y, xDiag, yDiag) {
+        const winningMoves = [{x: x, y: y}];
+        const player = this.getPiece(x, y).player;
+
+        for (let diag = 1; diag <= 3; diag++) {
+            const checkX = x + xDiag * diag;
+            const checkY = y + yDiag * diag;
+
+            const checkPiece = this.getPiece(checkX, checkY);
+
+            if (checkPiece && checkPiece.player === player) {
+                winningMoves.push({x: checkX, y: checkY});
+            } else {
+                break;
+            }
+        }
+
+        for (let diag = -1; diag >= -3; diag--) {
+            const checkX = x + xDiag * diag;
+            const checkY = y + yDiag * diag;
+
+            const checkPiece = this.getPiece(checkX, checkY);
+
+            if (checkPiece && checkPiece.player === player) {
+                winningMoves.push({ x: checkX, y: checkY });
+            } else {
+                break;
+            }
+        }
+
+        return winningMoves;
+    }
+
+    checkForWin(x, y, player) {
+        const diags = [{x: 1, y: 0}, {x: 0, y: 1}, {x: -1, y: 1}, {x: 1, y: 1}];
+
+        for (let i = 0; i < diags.length; i++) {
+            const diag = diags[i];
+            const winningMoves = this.getWinningMovesForDiag(x, y, diag.x, diag.y);
+
+            if (winningMoves.length > 3) {
+                this.setState({winner: player, winningMoves})
+            }
+        }
+        return this.checkForColWin(x, y, player) || this.checkForRowWin(x, y, player);
+    }
+
     addMove(x, y) {
         const { playerTurn } = this.state;
         const nextPlayerTurn = playerTurn === 'red' ? 'yellow' : 'red';
-        this.setState({moves: this.state.moves.concat({x, y, player: playerTurn}), playerTurn: nextPlayerTurn}, this.checkForWin(x, y, playerTurn));
+        this.setState({moves: this.state.moves.concat({x, y, player: playerTurn}), playerTurn: nextPlayerTurn}, () => this.checkForWin(x, y, playerTurn));
     }
 
     createBoard() {
-        const {rows, columns} = this.state;
+        const {rows, columns, winner} = this.state;
         const rowViews = [];
 
         for (let row = 0; row < this.state.rows; row++) {
@@ -124,6 +179,7 @@ class App extends React.Component {
 
         return (
             <div style={{ backgrounColor: 'red', display: 'flex', flexDirection: 'column'}}>
+                {winner && alert(`${winner} WINS!!`)}
                 {rowViews}
             </div>
         )
@@ -135,6 +191,8 @@ class App extends React.Component {
         return (
             <div>
                 {this.createBoard()}
+                <br/>
+                <button onClick={this.resetBoard}>New Game!</button>
             </div>
         )
     }
